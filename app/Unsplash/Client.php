@@ -13,16 +13,27 @@ use Unsplash\User;
  * Class Client
  * @package App\Unsplash
  *
+ * Helper für den Unsplash API Client
+ *
  * @author Fabian Schilf <fabian.schilf@active-value.de>
  * @copyright 2020 active value GmbH
  */
 class Client
 {
     /**
-     * unsplash API wird mit access key und secret key initialisiert
+     * @var InputResolver
      */
-    public function __construct()
+    private $inputResolver;
+
+    /**
+     * unsplash API wird mit access key und secret key initialisiert
+     *
+     * @param InputResolver $inputResolver
+     */
+    public function __construct(InputResolver $inputResolver)
     {
+        $this->inputResolver = $inputResolver;
+
         $config = config()->get('services')['unsplash'];
         HttpClient::init([
             'applicationId' => $config['access_key'],
@@ -39,10 +50,7 @@ class Client
     {
         // wenn $username mit @ startet, dann wird das erste zeichen entfernt
         // andernfalls liefert die unsplash API keine ergebnisse
-        if ($username[0] == '@') {
-            $username = substr($username, 1);
-        }
-
+        $username = $this->inputResolver->stripUsername($username);
         return User::find($username);
     }
 
