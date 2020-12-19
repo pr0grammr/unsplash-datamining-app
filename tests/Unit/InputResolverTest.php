@@ -41,11 +41,11 @@ class InputResolverTest extends TestCase
     const TEST_INPUTS_TYPES = [
         '@yeapea' => InputResolver::TYPE_USER,
         '@fabianschilf' => InputResolver::TYPE_USER,
-        'nbxffbJKPYc' => InputResolver::TYPE_IMAGE,
+        'nbxffbJKPYc' => InputResolver::TYPE_PHOTO,
         '@chewy' => InputResolver::TYPE_USER,
         '@_______life_' => InputResolver::TYPE_USER,
-        '-mu7gP2Y-VM' => InputResolver::TYPE_IMAGE,
-        '5bv5n4nwmRk' => InputResolver::TYPE_IMAGE
+        '-mu7gP2Y-VM' => InputResolver::TYPE_PHOTO,
+        '5bv5n4nwmRk' => InputResolver::TYPE_PHOTO
     ];
 
     /**
