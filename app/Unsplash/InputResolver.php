@@ -14,7 +14,7 @@ namespace App\Unsplash;
 class InputResolver
 {
     const TYPE_USER = 1;
-    const TYPE_IMAGE = 2;
+    const TYPE_PHOTO = 2;
 
     /**
      * regex pattern to check various combinations of unsplash.com URL
@@ -48,7 +48,7 @@ class InputResolver
      */
     public function resolveType(string $input)
     {
-        return $input[0] == '@' ? self::TYPE_USER : self::TYPE_IMAGE;
+        return $input[0] == '@' ? self::TYPE_USER : self::TYPE_PHOTO;
     }
 
     /**
