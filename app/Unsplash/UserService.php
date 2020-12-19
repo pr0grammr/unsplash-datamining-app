@@ -5,8 +5,6 @@ namespace App\Unsplash;
 
 
 use App\Models\UnsplashUser;
-use Unsplash\HttpClient;
-use Unsplash\User;
 
 
 /**
@@ -26,7 +24,8 @@ class UserService
      */
     public function create(array $data)
     {
-        return $this->prepare($data, new UnsplashUser());
+        $data = $this->prepare($data);
+        return UnsplashUser::create($data);
     }
 
     /**
@@ -36,34 +35,21 @@ class UserService
      */
     public function update(array $data, UnsplashUser $unsplashUser)
     {
-        return $this->prepare($data, $unsplashUser);
+        $data = $this->prepare($data);
+
+        $unsplashUser->fill($data);
+        $unsplashUser->save();
+
+        return $unsplashUser;
     }
 
     /**
      * @param array $data
-     * @param UnsplashUser $unsplashUser
-     * @return UnsplashUser
+     * @return array
      */
-    private function prepare(array $data, UnsplashUser $unsplashUser)
+    private function prepare(array $data)
     {
-        $unsplashUser->username = $data['username'];
-        $unsplashUser->name = $data['name'];
-        $unsplashUser->first_name = $data['first_name'];
-        $unsplashUser->last_name = $data['last_name'];
-        $unsplashUser->profile_image_url = $data['profile_image']['medium'];
-        $unsplashUser->twitter_username = $data['twitter_username'];
-        $unsplashUser->instagram_username = $data['instagram_username'];
-        $unsplashUser->bio = $data['bio'];
-        $unsplashUser->location = $data['location'];
-        $unsplashUser->total_collections = $data['total_collections'];
-        $unsplashUser->total_likes = $data['total_likes'];
-        $unsplashUser->total_photos = $data['total_photos'];
-        $unsplashUser->following_count = $data['following_count'];
-        $unsplashUser->followers_count = $data['followers_count'];
-        $unsplashUser->downloads = $data['downloads'];
-
-        $unsplashUser->save();
-
-        return $unsplashUser;
+        $data['profile_image_url'] = $data['profile_image']['medium'];
+        return $data;
     }
 }
