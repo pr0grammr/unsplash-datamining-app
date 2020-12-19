@@ -18,18 +18,18 @@ class CreateUnsplashUser extends Migration
             $table->string('username');
             $table->string('name');
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
             $table->string('twitter_username')->nullable();
             $table->string('instagram_username')->nullable();
             $table->string('bio')->nullable();
             $table->string('location')->nullable();
             $table->string('profile_image_url');
-            $table->string('total_collections');
-            $table->string('total_likes');
-            $table->string('total_photos');
-            $table->string('following_count');
-            $table->string('followers_count');
-            $table->string('downloads');
+            $table->integer('total_collections');
+            $table->integer('total_likes');
+            $table->integer('total_photos');
+            $table->integer('following_count');
+            $table->integer('followers_count');
+            $table->integer('downloads');
             $table->timestamps();
         });
     }
@@ -41,6 +41,6 @@ class CreateUnsplashUser extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('unsplash_user');
+        Schema::dropIfExists('unsplash_users');
     }
 }
