@@ -3,14 +3,14 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <form method="POST" action="{{ route('analyze') }}">
+            <form method="POST" action="{{ route('unsplash-analyze') }}">
                 @csrf
 
                 <div class="form-group row">
-                    <label for="identifier" class="col-md-4 col-form-label text-md-right">{{ __('Bild ID, Username oder URL') }}</label>
+                    <label for="unsplash-input" class="col-md-4 col-form-label text-md-right">{{ __('Bild ID, Username oder URL') }}</label>
 
                     <div class="col-md-6">
-                        <input id="identifier" type="text" class="form-control @error('identifier') is-invalid @enderror" name="identifier" value="{{ old('identifier') }}" required autocomplete="identifier" autofocus>
+                        <input id="unsplash-input" type="text" class="form-control @error('unsplash-input') is-invalid @enderror" name="unsplash-input" value="{{ old('unsplash-input') }}" required autocomplete="unsplash-input" autofocus>
 
                         @error('email')
                         <span class="invalid-feedback" role="alert">
