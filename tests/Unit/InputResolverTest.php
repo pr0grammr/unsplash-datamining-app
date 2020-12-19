@@ -48,6 +48,14 @@ class InputResolverTest extends TestCase
         '5bv5n4nwmRk' => InputResolver::TYPE_IMAGE
     ];
 
+    /**
+     * key-value array von test usernames und ihr erwarteter output bei der InputResolver::stripUsername methode
+     */
+    const TEST_USERNAMES = [
+        'fabianschilf' => 'fabianschilf',
+        '@yeapea' => 'yeapea'
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -55,7 +63,7 @@ class InputResolverTest extends TestCase
     }
 
     /**
-     * test resolving inputs
+     * test InputResolver::resolveInput
      */
     public function testResolveInput()
     {
@@ -66,13 +74,24 @@ class InputResolverTest extends TestCase
     }
 
     /**
-     * test resolving type of input
+     * test InputResolver::resolveType
      */
     public function testResolveType()
     {
         foreach (self::TEST_INPUTS_TYPES as $rawInput => $expectedType) {
             $type = $this->inputResolver->resolveType($rawInput);
             $this->assertEquals($expectedType, $type);
+        }
+    }
+
+    /**
+     * test InputResolver::stripUsername
+     */
+    public function testStripUsername()
+    {
+        foreach (self::TEST_USERNAMES as $rawUsername => $expectedUsername) {
+            $username = $this->inputResolver->stripUsername($rawUsername);
+            $this->assertEquals($expectedUsername, $username);
         }
     }
 }

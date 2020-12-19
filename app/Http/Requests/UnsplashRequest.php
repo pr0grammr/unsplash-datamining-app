@@ -25,7 +25,7 @@ class UnsplashRequest extends FormRequest
     public function rules()
     {
         return [
-            'identifier' => 'required'
+            'unsplash-input' => 'required'
         ];
     }
 }

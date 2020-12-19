@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UnsplashRequest;
+use App\Models\UnsplashUser;
+use App\Unsplash\Client;
 use App\Unsplash\InputResolver;
+use App\Unsplash\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 
 
 /**
@@ -25,11 +27,25 @@ class UnsplashController extends Controller
     private $inputResolver;
 
     /**
-     * @param InputResolver $inputResolver
+     * @var UserService
      */
-    public function __construct(InputResolver $inputResolver)
+    private $userService;
+
+    /**
+     * @var Client
+     */
+    private $unsplashClient;
+
+    /**
+     * @param InputResolver $inputResolver
+     * @param UserService $userService
+     * @param Client $unsplashClient
+     */
+    public function __construct(InputResolver $inputResolver, UserService $userService, Client $unsplashClient)
     {
         $this->inputResolver = $inputResolver;
+        $this->userService = $userService;
+        $this->unsplashClient = $unsplashClient;
     }
 
     /**
@@ -44,13 +60,38 @@ class UnsplashController extends Controller
     {
         $data = $request->validated();
 
-        $input = $this->inputResolver->resolveInput($data['input']);
+        $input = $this->inputResolver->resolveInput($data['unsplash-input']);
         $type = $this->inputResolver->resolveType($input);
 
         if ($type == InputResolver::TYPE_IMAGE) {
-            $a = 1;
+
         } else {
-            $a = 1;
+            $unsplashUser = $this->analyzeUser($input);
+            return redirect()->route('unsplash-user-detail', $unsplashUser);
         }
+    }
+
+    private function analyzeUser(string $username)
+    {
+        $user = $this->unsplashClient->findUserByUsername($username);
+        $username = $this->inputResolver->stripUsername($username);
+
+        if ($unsplashUser = UnsplashUser::where('username', $username)->first()) {
+            return $this->userService->update($user->toArray(), $unsplashUser);
+        } else {
+            return $this->userService->create($user->toArray());
+        }
+    }
+
+    private function analyzePhoto(string $photoId)
+    {
+
+    }
+
+    public function showUserDetail(UnsplashUser $unsplashUser)
+    {
+        return view('unsplash.user-detail', [
+            'user' => $unsplashUser
+        ]);
     }
 }

@@ -50,4 +50,17 @@ class InputResolver
     {
         return $input[0] == '@' ? self::TYPE_USER : self::TYPE_IMAGE;
     }
+
+    /**
+     * @param string $username
+     * @return false|string
+     */
+    public function stripUsername(string $username)
+    {
+        if ($username[0] == '@') {
+            return substr($username, 1);
+        }
+
+        return $username;
+    }
 }
