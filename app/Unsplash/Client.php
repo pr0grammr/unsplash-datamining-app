@@ -6,6 +6,7 @@ namespace App\Unsplash;
 
 use Unsplash\HttpClient;
 use Unsplash\Photo;
+use Unsplash\Search;
 use Unsplash\User;
 
 
@@ -85,7 +86,7 @@ class Client
         $config = config()->get('services')['unsplash'];
         $accessKey = $config['access_key'];
 
-        $url = sprintf('https://api.unsplash.com/users/%s/followers?client_id=%s&page=%s&limit=%s', $username, $accessKey, $page, $limit);
+        $url = sprintf('https://api.unsplash.com/users/%s/followers?client_id=%s&page=%s&per_page=%s', $username, $accessKey, $page, $limit);
 
         $response = $client->get($url);
 
