@@ -103,9 +103,9 @@ class UnsplashController extends Controller
         $username = $this->inputResolver->stripUsername($username);
 
         if ($unsplashUser = UnsplashUser::where('username', $username)->first()) {
-            return $this->userService->update($user->toArray(), $unsplashUser);
+            return $this->userService->update($user, $unsplashUser);
         } else {
-            return $this->userService->create($user->toArray());
+            return $this->userService->create($user);
         }
     }
 
@@ -122,9 +122,9 @@ class UnsplashController extends Controller
         $photo = $this->unsplashClient->findPhotoById($photoId);
 
         if ($unsplashPhoto = UnsplashPhoto::where('photo_id', $photoId)->first()) {
-            return $this->photoService->update($photo->toArray(), $unsplashPhoto);
+            return $this->photoService->update($photo, $unsplashPhoto);
         } else {
-            return $this->photoService->create($photo->toArray());
+            return $this->photoService->create($photo);
         }
     }
 

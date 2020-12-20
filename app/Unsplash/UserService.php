@@ -5,6 +5,7 @@ namespace App\Unsplash;
 
 
 use App\Models\UnsplashUser;
+use Unsplash\User;
 
 
 /**
@@ -19,23 +20,23 @@ use App\Models\UnsplashUser;
 class UserService
 {
     /**
-     * @param array $data
+     * @param User $user
      * @return UnsplashUser
      */
-    public function create(array $data)
+    public function create(User $user)
     {
-        $data = $this->prepare($data);
+        $data = $this->prepare($user);
         return UnsplashUser::create($data);
     }
 
     /**
-     * @param array $data
+     * @param User $user
      * @param UnsplashUser $unsplashUser
      * @return UnsplashUser
      */
-    public function update(array $data, UnsplashUser $unsplashUser)
+    public function update(User $user, UnsplashUser $unsplashUser)
     {
-        $data = $this->prepare($data);
+        $data = $this->prepare($user);
 
         $unsplashUser->fill($data);
         $unsplashUser->save();
@@ -44,12 +45,17 @@ class UserService
     }
 
     /**
-     * @param array $data
+     * @param User $user
      * @return array
      */
-    private function prepare(array $data)
+    private function prepare(User $user)
     {
+        $data = $user->toArray();
+        $photos = $user->photos();
+        $totalViews = $user->statistics()->offsetGet('views')->total;
+        $data['total_views'] = $totalViews;
         $data['profile_image_url'] = $data['profile_image']['medium'];
+
         return $data;
     }
 }

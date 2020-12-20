@@ -6,6 +6,7 @@ namespace App\Unsplash;
 
 use App\Models\UnsplashPhoto;
 use App\Models\UnsplashUser;
+use Unsplash\Photo;
 
 
 /**
@@ -38,23 +39,23 @@ class PhotoService
     }
 
     /**
-     * @param array $data
+     * @param Photo $photo
      * @return mixed
      */
-    public function create(array $data)
+    public function create(Photo $photo)
     {
-        $data = $this->prepare($data);
+        $data = $this->prepare($photo);
         return UnsplashPhoto::create($data);
     }
 
     /**
-     * @param array $data
+     * @param Photo $photo
      * @param UnsplashPhoto $unsplashPhoto
      * @return UnsplashPhoto
      */
-    public function update(array $data, UnsplashPhoto $unsplashPhoto)
+    public function update(Photo $photo, UnsplashPhoto $unsplashPhoto)
     {
-        $data = $this->prepare($data);
+        $data = $this->prepare($photo);
 
         $unsplashPhoto->fill($data);
         $unsplashPhoto->save();
@@ -63,11 +64,13 @@ class PhotoService
     }
 
     /**
-     * @param array $data
+     * @param Photo $photo
      * @return array
      */
-    private function prepare(array $data)
+    private function prepare(Photo $photo)
     {
+        $data = $photo->toArray();
+
         $data['photo_id'] = $data['id'];
 
         $username = $data['user']['username'];
@@ -76,7 +79,7 @@ class PhotoService
             $data['user_id'] = $unsplashUser->id;
         } else {
             $user = $this->unsplashClient->findUserByUsername($username);
-            $unsplashUser = $this->userService->create($user->toArray());
+            $unsplashUser = $this->userService->create($user);
             $data['user_id'] = $unsplashUser->id;
         }
 
