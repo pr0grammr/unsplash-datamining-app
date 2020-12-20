@@ -35,7 +35,7 @@
             @enderror
 
             <label for="password-confirm" class="sr-only">Password confirm</label>
-            <input id="password-confirm" type="password" class="form-control @error('password-confirm') is-invalid @enderror" name="password-confirm" required autocomplete="current-password" placeholder="Password confirm">
+            <input id="password-confirm" type="password" class="form-control @error('password-confirm') is-invalid @enderror" name="password_confirmation" required autocomplete="current-password" placeholder="Password confirm">
 
             @error('password-confirm')
             <span class="invalid-feedback" role="alert">
