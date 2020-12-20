@@ -72,6 +72,7 @@ class PhotoService
         $data = $photo->toArray();
 
         $data['photo_id'] = $data['id'];
+        $data['url'] = $data['urls']['full'];
 
         $username = $data['user']['username'];
 

@@ -19,6 +19,7 @@ class CreatePhotosTable extends Migration
             $table->integer('likes');
             $table->integer('downloads');
             $table->integer('views');
+            $table->string('url');
             $table->foreignId('user_id')->constrained('unsplash_users')->onDelete('cascade');
             $table->timestamps();
         });
