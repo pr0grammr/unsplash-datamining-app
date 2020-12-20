@@ -62,4 +62,53 @@ class Client
     {
         return Photo::find($photoId);
     }
+
+    /**
+     * da der unsplash API PHP wrapper keine möglichkeit bietet,
+     * die follower eines users zu bekommen, muss dies manuell per guzzleClient gemacht werden
+     * hier wird ein request an den followers endpoint gestellt
+     * danach wird eine pagination berechnet
+     * zurückgegeben wird ein array mit einem 'data' key, der die follower enthält (je nach limit, standard: 10)
+     * und einem 'pagination' key, der die pagination enthält
+     *
+     * @param string $username
+     * @param int $page
+     * @param int $limit
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getFollowersOfUser(string $username, int $page = 1, int $limit = 10)
+    {
+        $username = $this->inputResolver->stripUsername($username);
+
+        $client = new \GuzzleHttp\Client();
+        $config = config()->get('services')['unsplash'];
+        $accessKey = $config['access_key'];
+
+        $url = sprintf('https://api.unsplash.com/users/%s/followers?client_id=%s&page=%s&limit=%s', $username, $accessKey, $page, $limit);
+
+        $response = $client->get($url);
+
+        $pagination = [
+            'total' => intval($response->getHeader('X-Total')[0]),
+            'per_page' => $limit,
+            'current_page' => $page
+        ];
+
+        $pagination['total_pages'] = ceil($pagination['total'] / $limit);
+        $pagination['next_page'] = $page < $pagination['total_pages'] ? $page + 1 : null;
+        $pagination['previous_page'] = $page > 1 ? $page - 1 : null;
+
+        if ($response->getStatusCode() != 200) {
+            return [];
+        }
+
+        $content = $response->getBody()->getContents();
+        $json = json_decode($content, true);
+
+        return [
+            'data' => $json,
+            'pagination' => $pagination
+        ];
+    }
 }
