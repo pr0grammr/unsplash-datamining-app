@@ -51,9 +51,13 @@ class UserService
     private function prepare(User $user)
     {
         $data = $user->toArray();
-        $photos = $user->photos();
-        $totalViews = $user->statistics()->offsetGet('views')->total;
+
+        $userStats = $user->statistics();
+        $totalLikes = $userStats->offsetGet('likes')->total;
+        $totalViews = $userStats->offsetGet('views')->total;
+
         $data['total_views'] = $totalViews;
+        $data['total_likes'] = $totalLikes;
         $data['profile_image_url'] = $data['profile_image']['medium'];
 
         return $data;
