@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UnsplashController;
+use App\Http\Controllers\UnsplashUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +18,44 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/unsplash', [UnsplashController::class, 'show'])->name('unsplash-index');
-Route::get('/unsplash/users/{unsplashUser}', [UnsplashController::class, 'showUserDetail'])->name('unsplash-user-detail');
-Route::get('/unsplash/photos/{unsplashPhoto}', [UnsplashController::class, 'showPhotoDetail'])->name('unsplash-photo-detail');
-Route::post('/unsplash/analyze', [UnsplashController::class, 'analyzeInput'])->name('unsplash-analyze');
+Route::get(
+    '/',
+    [
+        App\Http\Controllers\HomeController::class, 'index'
+    ])->name('home');
+
+Route::get(
+    '/unsplash',
+    [
+        UnsplashController::class, 'show'
+    ])->name('unsplash-index');
+
+Route::get(
+    '/unsplash/users/{unsplashUser}',
+    [
+        UnsplashUserController::class, 'show'
+    ])->name('unsplash-user-detail');
+
+Route::get(
+    '/unsplash/users/{unsplashUser}/followers',
+    [
+        UnsplashUserController::class, 'showFollowers'
+    ])->name('unsplash-user-detail-followers');
+
+Route::get(
+    '/unsplash/photos/{unsplashPhoto}',
+    [
+        UnsplashController::class, 'showPhotoDetail'
+    ])->name('unsplash-photo-detail');
+
+Route::post(
+    '/unsplash/analyze',
+    [
+        UnsplashController::class, 'analyzeInput'
+    ])->name('unsplash-analyze');
+
+Route::get(
+    '/dashboard',
+    [
+        DashboardController::class, 'show'
+    ])->name('dashboard-index');

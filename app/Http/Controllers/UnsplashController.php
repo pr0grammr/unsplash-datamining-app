@@ -129,19 +129,6 @@ class UnsplashController extends Controller
     }
 
     /**
-     * zeigt die detailseite eines users
-     *
-     * @param UnsplashUser $unsplashUser
-     * @return Application|Factory|View
-     */
-    public function showUserDetail(UnsplashUser $unsplashUser)
-    {
-        return view('unsplash.user-detail', [
-            'user' => $unsplashUser
-        ]);
-    }
-
-    /**
      * zeigt die detail seite eines fotos
      *
      * @param UnsplashPhoto $unsplashPhoto
