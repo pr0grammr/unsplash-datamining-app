@@ -43,6 +43,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.vm.provision "shell", path: customizationScriptPath, privileged: false, keep_color: true
     end
 
+    # Install MongoDB If Necessary
+    if settings.has_key?("mongodb") && settings["mongodb"]
+        config.vm.provision "shell" do |s|
+            s.path = scriptDir + "/install-mongo.sh"
+        end
+    end
+
     if Vagrant.has_plugin?('vagrant-hostsupdater')
         config.hostsupdater.aliases = settings['sites'].map { |site| site['map'] }
     elsif Vagrant.has_plugin?('vagrant-hostmanager')
