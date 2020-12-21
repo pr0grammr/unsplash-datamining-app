@@ -1,32 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container text-center">
         <div class="row justify-content-center">
-            <form method="POST" action="{{ route('unsplash-analyze') }}">
+            <form class="form-signin" method="POST" action="{{ route('unsplash-analyze') }}">
                 @csrf
 
-                <div class="form-group row">
-                    <label for="unsplash-input" class="col-md-4 col-form-label text-md-right">{{ __('Bild ID, Username oder URL') }}</label>
-
-                    <div class="col-md-6">
-                        <input id="unsplash-input" type="text" class="form-control @error('unsplash-input') is-invalid @enderror" name="unsplash-input" value="{{ old('unsplash-input') }}" required autocomplete="unsplash-input" autofocus>
-
-                        @error('email')
-                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                        @enderror
-                    </div>
+                <h1 class="h3 mb-3 font-weight-normal">Analyze</h1>
+                <label for="unsplash-input">{{ __('Photo ID/URL or Username/URL') }}</label>
+                <div class="col-md-12 mb-3">
+                    <small>Username beginning with @</small>
                 </div>
+                <input id="unsplash-input" type="text" class="form-control mb-3 @error('unsplash-input') is-invalid @enderror" name="unsplash-input" value="{{ old('unsplash-input') }}" required autocomplete="unsplash-input" autofocus placeholder="Photo ID/URL or Username/URL">
 
-                <div class="form-group row mb-0">
-                    <div class="col-md-8 offset-md-4">
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Login') }}
-                        </button>
-                    </div>
-                </div>
+                @error('email')
+                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                @enderror
+
+                <button type="submit" class="btn btn-primary">{{ __('Analyze') }}</button>
             </form>
         </div>
     </div>

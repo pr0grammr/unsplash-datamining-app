@@ -19,3 +19,20 @@
         border-top-right-radius: 0;
     }
 }
+
+.dashboard-card {
+    .username {
+        display: block;
+    }
+
+    .downloads {
+        display: block;
+        font-size: 3rem;
+    }
+}
+
+h1 {
+    small {
+        font-size: 1rem;
+    }
+}

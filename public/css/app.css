@@ -10910,3 +10910,22 @@ a.text-dark:focus {
   margin: 0 auto;
 }
 
+.form-signin input[type=password] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.dashboard-card .username {
+  display: block;
+}
+
+.dashboard-card .downloads {
+  display: block;
+  font-size: 3rem;
+}
+
+h1 small {
+  font-size: 1rem;
+}
+
