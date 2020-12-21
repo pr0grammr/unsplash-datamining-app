@@ -12,6 +12,9 @@ use App\Unsplash\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Unsplash\Exception;
 
 
 /**
@@ -62,7 +65,7 @@ class UnsplashController extends Controller
      */
     public function show()
     {
-        return view('unsplash.index');
+        return view('unsplash.index', ['error' => '']);
     }
 
     /**
@@ -71,7 +74,7 @@ class UnsplashController extends Controller
      * analysiert user oder foto
      *
      * @param UnsplashRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return Application|Factory|View|\Illuminate\Http\RedirectResponse
      */
     public function analyzeInput(UnsplashRequest $request)
     {
@@ -81,11 +84,25 @@ class UnsplashController extends Controller
         $type = $this->inputResolver->resolveType($input);
 
         if ($type == InputResolver::TYPE_PHOTO) {
-            $unsplashPhoto = $this->analyzePhoto($input);
-            return redirect()->route('unsplash-photo-detail', $unsplashPhoto);
+            try {
+                $unsplashPhoto = $this->analyzePhoto($input);
+                return redirect()->route('unsplash-photo-detail', $unsplashPhoto);
+
+            } catch (Exception $e) {
+                return view('unsplash.index', [
+                    'error' => sprintf('Photo with ID %s was not found at unsplash.com', $input)
+                ]);
+            }
         } else {
-            $unsplashUser = $this->analyzeUser($input);
-            return redirect()->route('unsplash-user-detail', $unsplashUser);
+            try {
+                $unsplashUser = $this->analyzeUser($input);
+                return redirect()->route('unsplash-user-detail', $unsplashUser);
+
+            } catch (Exception $e) {
+                return view('unsplash.index', [
+                    'error' => sprintf('User with username %s was not found at unsplash.com', $input)
+                ]);
+            }
         }
     }
 
@@ -99,8 +116,8 @@ class UnsplashController extends Controller
      */
     private function analyzeUser(string $username)
     {
-        $user = $this->unsplashClient->findUserByUsername($username);
         $username = $this->inputResolver->stripUsername($username);
+        $user = $this->unsplashClient->findUserByUsername($username);
 
         if ($unsplashUser = UnsplashUser::where('username', $username)->first()) {
             return $this->userService->update($user, $unsplashUser);
