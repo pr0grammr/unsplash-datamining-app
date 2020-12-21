@@ -45,7 +45,12 @@ class PhotoService
     public function create(Photo $photo)
     {
         $data = $this->prepare($photo);
-        return UnsplashPhoto::create($data);
+
+        $unsplashPhoto = new UnsplashPhoto($data);
+        $unsplashPhoto->user()->associate($data['user']);
+        $unsplashPhoto->save();
+
+        return $unsplashPhoto;
     }
 
     /**
@@ -72,16 +77,19 @@ class PhotoService
         $data = $photo->toArray();
 
         $data['photo_id'] = $data['id'];
-        $data['url'] = $data['urls']['full'];
 
         $username = $data['user']['username'];
 
         if ($unsplashUser = UnsplashUser::where('username', $username)->first()) {
-            $data['user_id'] = $unsplashUser->id;
+            $data['user'] = $unsplashUser;
         } else {
             $user = $this->unsplashClient->findUserByUsername($username);
             $unsplashUser = $this->userService->create($user);
-            $data['user_id'] = $unsplashUser->id;
+
+            // überschreiben des detection mode, da der user in dem fall automatisch angelegt wird
+            $unsplashUser->detection_mode = UnsplashUser::DETECTION_MODE_AUTO;
+            $unsplashUser->save();
+            $data['user'] = $unsplashUser;
         }
 
         return $data;
