@@ -18,44 +18,22 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get(
-    '/',
-    [
-        App\Http\Controllers\HomeController::class, 'index'
-    ])->name('home');
+Route::middleware(['auth'])->group(function () {
 
-Route::get(
-    '/unsplash',
-    [
-        UnsplashController::class, 'show'
-    ])->name('unsplash-index');
+    Route::prefix('unsplash')->group(function () {
+        Route::get('/', [UnsplashController::class, 'show'])->name('unsplash-index');
 
-Route::get(
-    '/unsplash/users/{unsplashUser}',
-    [
-        UnsplashUserController::class, 'show'
-    ])->name('unsplash-user-detail');
+        Route::get('/users/{unsplashUser}',[UnsplashUserController::class, 'show'])->name('unsplash-user-detail');
+        Route::get('/users/{unsplashUser}/followers', [UnsplashUserController::class, 'showFollowers'])->name('unsplash-user-detail-followers');
 
-Route::get(
-    '/unsplash/users/{unsplashUser}/followers',
-    [
-        UnsplashUserController::class, 'showFollowers'
-    ])->name('unsplash-user-detail-followers');
+        Route::get('/photos/{unsplashPhoto}',[UnsplashController::class, 'showPhotoDetail'])->name('unsplash-photo-detail');
 
-Route::get(
-    '/unsplash/photos/{unsplashPhoto}',
-    [
-        UnsplashController::class, 'showPhotoDetail'
-    ])->name('unsplash-photo-detail');
+        Route::post('/analyze',[UnsplashController::class, 'analyzeInput'])->name('unsplash-analyze');
+    });
 
-Route::post(
-    '/unsplash/analyze',
-    [
-        UnsplashController::class, 'analyzeInput'
-    ])->name('unsplash-analyze');
+    Route::get('/dashboard',[DashboardController::class, 'show'])->name('dashboard-index');
+});
 
-Route::get(
-    '/dashboard',
-    [
-        DashboardController::class, 'show'
-    ])->name('dashboard-index');
+Route::get('/', function() {
+    return redirect()->route('dashboard-index');
+});
