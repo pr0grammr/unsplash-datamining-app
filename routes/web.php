@@ -35,5 +35,5 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/', function() {
-    return redirect()->route('dashboard-index');
+    return redirect()->route('unsplash-index');
 });
