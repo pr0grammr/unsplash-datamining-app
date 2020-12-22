@@ -26,7 +26,6 @@ class UserService
     public function create(User $user)
     {
         $data = $this->prepare($user);
-        $data['detection_mode'] = UnsplashUser::DETECTION_MODE_MANUAL;
         return UnsplashUser::create($data);
     }
 
@@ -59,6 +58,7 @@ class UserService
 
         $data['total_views'] = $totalViews;
         $data['total_likes'] = $totalLikes;
+        $data['detection_mode'] = UnsplashUser::DETECTION_MODE_MANUAL;
 
         return $data;
     }
