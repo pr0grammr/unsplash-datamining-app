@@ -6,6 +6,7 @@ namespace App\Unsplash;
 
 use App\Models\UnsplashPhoto;
 use App\Models\UnsplashUser;
+use MongoDB\BSON\UTCDateTime;
 use Unsplash\Photo;
 
 
@@ -18,6 +19,8 @@ use Unsplash\Photo;
  */
 class PhotoService
 {
+    use RefreshTrait;
+
     /**
      * @var Client
      */
@@ -60,10 +63,12 @@ class PhotoService
      */
     public function update(Photo $photo, UnsplashPhoto $unsplashPhoto)
     {
-        $data = $this->prepare($photo);
+        if ($this->needsRefresh($photo, $unsplashPhoto)) {
+            $data = $this->prepare($photo);
 
-        $unsplashPhoto->fill($data);
-        $unsplashPhoto->save();
+            $unsplashPhoto->fill($data);
+            $unsplashPhoto->save();
+        }
 
         return $unsplashPhoto;
     }
@@ -77,6 +82,7 @@ class PhotoService
         $data = $photo->toArray();
 
         $data['photo_id'] = $data['id'];
+        $data['refreshed_at'] = new UTCDateTime(new \DateTime());
 
         $username = $data['user']['username'];
 

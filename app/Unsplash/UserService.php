@@ -5,6 +5,7 @@ namespace App\Unsplash;
 
 
 use App\Models\UnsplashUser;
+use MongoDB\BSON\UTCDateTime;
 use Unsplash\User;
 use App\Twitter\Client as TwitterClient;
 
@@ -20,6 +21,8 @@ use App\Twitter\Client as TwitterClient;
  */
 class UserService
 {
+    use RefreshTrait;
+
     /**
      * @var TwitterClient
      */
@@ -40,6 +43,11 @@ class UserService
     public function create(User $user)
     {
         $data = $this->prepare($user);
+
+        if ($data['twitter_username']) {
+            $data['twitter'] = $this->twitterClient->getUserByUsername($data['twitter_username']);
+        }
+
         return UnsplashUser::create($data);
     }
 
@@ -50,7 +58,21 @@ class UserService
      */
     public function update(User $user, UnsplashUser $unsplashUser)
     {
-        $data = $this->prepare($user);
+        /**
+         * prüft ob der API User erneut abgefragt werden muss
+         * gibt den bereits vorhandenen user zurück, wenn
+         * der datensatz nicht erneuert werden muss
+         */
+        if ($this->needsRefresh($user, $unsplashUser)) {
+            $data = $this->prepare($user);
+        } else {
+            $data = $user->toArray();
+        }
+
+        // twitter daten werden dennoch geupdated um sie aktuell zu halten, selbst wenn kein refresh notwendig ist
+        if ($data['twitter_username']) {
+            $data['twitter'] = $this->twitterClient->getUserByUsername($data['twitter_username']);
+        }
 
         $unsplashUser->fill($data);
         $unsplashUser->save();
@@ -73,10 +95,7 @@ class UserService
         $data['total_views'] = $totalViews;
         $data['total_likes'] = $totalLikes;
         $data['detection_mode'] = UnsplashUser::DETECTION_MODE_MANUAL;
-
-        if ($data['twitter_username']) {
-            $data['twitter'] = $this->twitterClient->getUserByUsername($data['twitter_username']);
-        }
+        $data['refreshed_at'] = new UTCDateTime(new \DateTime());
 
         return $data;
     }
