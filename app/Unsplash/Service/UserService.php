@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Unsplash;
+namespace App\Unsplash\Service;
 
 
 use App\Models\UnsplashUser;
@@ -110,7 +110,7 @@ class UserService
      */
     private function calculateLikesFromPhotos(User $user)
     {
-        $limit = 50;
+        $limit = 500;
         $pages = ceil($user->total_photos / $limit);
         $likes = [];
 

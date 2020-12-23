@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 
 use App\Models\UnsplashUser;
 use App\Unsplash\Client;
-use App\Unsplash\UserService;
+use App\Unsplash\Service\UserService;
 use Illuminate\Console\Command;
 
 

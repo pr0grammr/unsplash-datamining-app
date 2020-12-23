@@ -6,7 +6,7 @@ namespace Tests\Unit;
 
 use App\Models\UnsplashUser;
 use App\Unsplash\Client;
-use App\Unsplash\UserService;
+use App\Unsplash\Service\UserService;
 use Tests\TestCase;
 
 

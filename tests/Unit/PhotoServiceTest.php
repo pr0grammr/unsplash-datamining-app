@@ -7,7 +7,7 @@ namespace Tests\Unit;
 use App\Models\UnsplashPhoto;
 use App\Models\UnsplashUser;
 use App\Unsplash\Client;
-use App\Unsplash\PhotoService;
+use App\Unsplash\Service\PhotoService;
 use Tests\TestCase;
 
 

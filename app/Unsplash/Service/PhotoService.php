@@ -1,11 +1,12 @@
 <?php
 
 
-namespace App\Unsplash;
+namespace App\Unsplash\Service;
 
 
 use App\Models\UnsplashPhoto;
 use App\Models\UnsplashUser;
+use App\Unsplash\Client;
 use MongoDB\BSON\UTCDateTime;
 use Unsplash\Photo;
 

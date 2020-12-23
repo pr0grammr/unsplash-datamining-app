@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 
 use App\Models\UnsplashPhoto;
 use App\Unsplash\Client;
-use App\Unsplash\PhotoService;
+use App\Unsplash\Service\PhotoService;
 use Illuminate\Console\Command;
 
 

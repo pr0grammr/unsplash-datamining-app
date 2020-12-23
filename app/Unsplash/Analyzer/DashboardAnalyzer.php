@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Unsplash;
+namespace App\Unsplash\Analyzer;
 
 
 use App\Models\UnsplashPhoto;
@@ -9,7 +9,7 @@ use App\Models\UnsplashUser;
 
 
 /**
- * Class DataAnalyzer
+ * Class DashboardAnalyzer
  * @package App\Unsplash
  *
  * klasse zur berechnung von statistiken auf dem dashboard
@@ -17,7 +17,7 @@ use App\Models\UnsplashUser;
  * @author Fabian Schilf <fabian.schilf@active-value.de>
  * @copyright 2020 active value GmbH
  */
-class DataAnalyzer
+class DashboardAnalyzer
 {
     /**
      * liefert das foto, mit dem höchsten wert von $columnName
