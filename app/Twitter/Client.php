@@ -14,23 +14,16 @@ namespace App\Twitter;
 class Client
 {
     /**
-     * @var string
-     */
-    private $token;
-
-    /**
      * @var \GuzzleHttp\Client
      */
-    private $guzzleClient;
+    private $client;
 
     /**
-     * @param \GuzzleHttp\Client $guzzleClient
+     * @param \GuzzleHttp\Client $client
      */
-    public function __construct(\GuzzleHttp\Client $guzzleClient)
+    public function __construct(\GuzzleHttp\Client $client)
     {
-        $config = config()->get('services')['twitter'];
-        $this->token = $config['bearer_token'];
-        $this->guzzleClient = $guzzleClient;
+        $this->client = $client;
     }
 
     /**
@@ -45,14 +38,7 @@ class Client
      */
     public function getUserByUsername(string $username)
     {
-        $response = $this->guzzleClient->get(
-            sprintf('https://api.twitter.com/2/users/by/username/%s?user.fields=public_metrics', $username), [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->token
-                ]
-            ]
-        );
-
+        $response = $this->client->get(sprintf('/2/users/by/username/%s?user.fields=public_metrics', $username));
         if ($response->getStatusCode() != 200) {
             return null;
         }
