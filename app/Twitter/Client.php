@@ -45,7 +45,11 @@ class Client
 
         $contents = $response->getBody()->getContents();
         $json = json_decode($contents, true);
-        $data = $json['data'];
+        $data = $json['data'] ?? null;
+        if (!$data) {
+            return null;
+        }
+
         $stats = $data['public_metrics'];
 
         return [
