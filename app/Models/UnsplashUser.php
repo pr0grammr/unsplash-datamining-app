@@ -32,7 +32,8 @@ class UnsplashUser extends Model
         'followers_count',
         'downloads',
         'detection_mode',
-        'twitter'
+        'twitter',
+        'refreshed_at'
     ];
 
     public function photos()

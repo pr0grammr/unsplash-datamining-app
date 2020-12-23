@@ -20,7 +20,8 @@ class UnsplashPhoto extends Model
         'likes',
         'views',
         'downloads',
-        'user'
+        'user',
+        'refreshed_at'
     ];
 
     public function user()
