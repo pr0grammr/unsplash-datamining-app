@@ -34,6 +34,11 @@ return [
         'access_key' => env('UNSPLASH_ACCESS_KEY'),
         'secret_key' => env('UNSPLASH_SECRET_KEY'),
         'application_name' => env('UNSPLASH_APP_NAME')
-    ]
+    ],
 
+    'twitter' => [
+        'api_key' => env('TWITTER_API_KEY'),
+        'api_secret' => env('TWITTER_API_SECRET'),
+        'bearer_token' => env('TWITTER_BEARER_TOKEN')
+    ]
 ];
