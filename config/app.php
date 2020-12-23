@@ -176,7 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         \Jenssegers\Mongodb\MongodbServiceProvider::class,
 
-        \App\Providers\TwitterProvider::class
+        \App\Providers\TwitterProvider::class,
+        \App\Providers\UnsplashProvider::class
     ],
 
     /*

@@ -4,9 +4,7 @@
 namespace App\Unsplash;
 
 
-use Unsplash\HttpClient;
 use Unsplash\Photo;
-use Unsplash\Search;
 use Unsplash\User;
 
 
@@ -34,13 +32,6 @@ class Client
     public function __construct(InputResolver $inputResolver)
     {
         $this->inputResolver = $inputResolver;
-
-        $config = config()->get('services')['unsplash'];
-        HttpClient::init([
-            'applicationId' => $config['access_key'],
-            'secret' => $config['secret_key'],
-            'utmSource' => $config['application_name']
-        ]);
     }
 
     /**
