@@ -6,6 +6,7 @@ namespace App\Unsplash;
 
 use App\Models\UnsplashUser;
 use Unsplash\User;
+use App\Twitter\Client as TwitterClient;
 
 
 /**
@@ -19,6 +20,19 @@ use Unsplash\User;
  */
 class UserService
 {
+    /**
+     * @var TwitterClient
+     */
+    private $twitterClient;
+
+    /**
+     * @param TwitterClient $twitterClient
+     */
+    public function __construct(TwitterClient $twitterClient)
+    {
+        $this->twitterClient = $twitterClient;
+    }
+
     /**
      * @param User $user
      * @return UnsplashUser
@@ -59,6 +73,10 @@ class UserService
         $data['total_views'] = $totalViews;
         $data['total_likes'] = $totalLikes;
         $data['detection_mode'] = UnsplashUser::DETECTION_MODE_MANUAL;
+
+        if ($data['twitter_username']) {
+            $data['twitter'] = $this->twitterClient->getUserByUsername($data['twitter_username']);
+        }
 
         return $data;
     }
