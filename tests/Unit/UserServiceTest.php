@@ -7,7 +7,6 @@ namespace Tests\Unit;
 use App\Models\UnsplashUser;
 use App\Unsplash\Client;
 use App\Unsplash\UserService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 
@@ -30,8 +29,6 @@ class UserServiceTest extends TestCase
      */
     private $userService;
 
-    const TEST_USERNAME = 'yeapea';
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,15 +42,27 @@ class UserServiceTest extends TestCase
      */
     public function testCreateUser()
     {
-        $user = $this->unsplashClient->findUserByUsername(self::TEST_USERNAME);
+        $user = $this->unsplashClient->findUserByUsername('@yeapea');
         $unsplashUser = $this->userService->create($user);
 
-        $this->assertEquals(self::TEST_USERNAME, $unsplashUser->username);
+        $this->assertEquals('yeapea', $unsplashUser->username);
         $this->assertInstanceOf(UnsplashUser::class, $unsplashUser);
 
         // find user
-        $unsplashUser = UnsplashUser::where('username', self::TEST_USERNAME)->first();
+        $unsplashUser = UnsplashUser::where('username', 'yeapea')->first();
         $this->assertNotNull($unsplashUser);
+    }
+
+    /**
+     * test create user and analyze twitter data
+     */
+    public function testCreateUserWithTwitterData()
+    {
+        $user = $this->unsplashClient->findUserByUsername('@chewy');
+        $unsplashUser = $this->userService->create($user);
+
+        $this->assertNotNull($unsplashUser->twitter);
+        $this->assertEquals('Chewy', $unsplashUser->twitter['username']);
     }
 
     /**
@@ -61,14 +70,14 @@ class UserServiceTest extends TestCase
      */
     public function testUpdateUser()
     {
-        $user = $this->unsplashClient->findUserByUsername(self::TEST_USERNAME);
-        $unsplashUser = UnsplashUser::where('username', self::TEST_USERNAME)->first();
+        $user = $this->unsplashClient->findUserByUsername('@yeapea');
+        $unsplashUser = UnsplashUser::where('username', 'yeapea')->first();
 
         $this->assertNotNull($unsplashUser);
 
         $unsplashUser = $this->userService->update($user, $unsplashUser);
 
-        $this->assertEquals(self::TEST_USERNAME, $unsplashUser->username);
+        $this->assertEquals('yeapea', $unsplashUser->username);
         $this->assertNotNull($unsplashUser);
         $this->assertEquals(UnsplashUser::DETECTION_MODE_MANUAL, $unsplashUser->detection_mode);
     }
@@ -78,7 +87,7 @@ class UserServiceTest extends TestCase
      */
     public function testUserDetectionMode()
     {
-        $user = $this->unsplashClient->findUserByUsername(self::TEST_USERNAME);
+        $user = $this->unsplashClient->findUserByUsername('@yeapea');
         $unsplashUser = $this->userService->create($user);
 
         $this->assertEquals(UnsplashUser::DETECTION_MODE_MANUAL, $unsplashUser->detection_mode);
