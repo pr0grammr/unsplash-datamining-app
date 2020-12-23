@@ -13,15 +13,9 @@ class CreatePhotosTable extends Migration
      */
     public function up()
     {
-        Schema::create('unsplash_photos', function (Blueprint $table) {
-            $table->id();
-            $table->string('photo_id');
-            $table->integer('likes');
-            $table->integer('downloads');
-            $table->integer('views');
-            $table->string('url');
-            $table->foreignId('user_id')->constrained('unsplash_users')->onDelete('cascade');
-            $table->timestamps();
+        Schema::create('unsplash_photos', function (Blueprint $collection) {
+            $collection->unique('photo_id');
+            $collection->timestamps();
         });
     }
 

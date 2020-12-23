@@ -13,25 +13,10 @@ class CreateUnsplashUser extends Migration
      */
     public function up()
     {
-        Schema::create('unsplash_users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username');
-            $table->string('name');
-            $table->string('first_name');
-            $table->string('last_name')->nullable();
-            $table->string('twitter_username')->nullable();
-            $table->string('instagram_username')->nullable();
-            $table->string('bio')->nullable();
-            $table->string('location')->nullable();
-            $table->string('profile_image_url');
-            $table->integer('total_collections');
-            $table->integer('total_likes');
-            $table->integer('total_photos');
-            $table->integer('total_views');
-            $table->integer('following_count');
-            $table->integer('followers_count');
-            $table->integer('downloads');
-            $table->timestamps();
+        Schema::create('unsplash_users', function (Blueprint $collection) {
+            $collection->index('username');
+            $collection->unique('username');
+            $collection->timestamps();
         });
     }
 
