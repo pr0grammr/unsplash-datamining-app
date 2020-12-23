@@ -25,6 +25,7 @@
 
                         <div class="row mb-12">
                             <div class="col-md-6">
+                                <h2>Unsplash</h2>
                                 <ul>
                                     <li>Photos: <strong>{{ number_format($user->total_photos, 0) }}</strong></li>
                                     <li>Likes: <strong>{{ number_format($user->total_likes, 0) }}</strong></li>
@@ -34,6 +35,21 @@
                                     <li>Following: <strong>{{ number_format($user->following_count, 0) }}</strong></li>
                                     <li>Followers: <strong>{{ number_format($user->followers_count, 0) }}</strong></li>
                                 </ul>
+                            </div>
+                        </div>
+
+                        <div class="row mb-12">
+                            <div class="col-md-6">
+                                <h2>Twitter</h2>
+                                @if ($user->twitter)
+                                    <ul>
+                                        <li>Tweets: <strong>{{ number_format($user->twitter['tweet_count'], 0) }}</strong></li>
+                                        <li>Following: <strong>{{ number_format($user->twitter['following_count'], 0) }}</strong></li>
+                                        <li>Followers: <strong>{{ number_format($user->twitter['followers_count'], 0) }}</strong></li>
+                                    </ul>
+                                @else
+                                    <p>No Twitter data</p>
+                                @endif
                             </div>
                         </div>
                     </div>
