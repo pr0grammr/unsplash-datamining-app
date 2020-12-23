@@ -48,7 +48,9 @@
                                         <li>Followers: <strong>{{ number_format($user->twitter['followers_count'], 0) }}</strong></li>
                                     </ul>
                                 @else
-                                    <p>No Twitter data</p>
+                                    <ul>
+                                        <li>This user was not found on twitter</li>
+                                    </ul>
                                 @endif
                             </div>
                         </div>

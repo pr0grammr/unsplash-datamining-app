@@ -5,12 +5,16 @@
         <div class="row">
             <div class="col-md-12">
                 <ul>
-                    @foreach($followers as $follower)
-                        <li>
-                            <img src="{{ $follower['profile_image']['medium'] }}" alt="{{ $follower['username'] }}">
-                            <a href="{{ $follower['links']['html'] }}">{{ $follower['username'] }}</a>
-                        </li>
-                    @endforeach
+                    @if ($followers)
+                        @foreach($followers as $follower)
+                            <li>
+                                <img src="{{ $follower['profile_image']['medium'] }}" alt="{{ $follower['username'] }}">
+                                <a href="{{ $follower['links']['html'] }}">{{ $follower['username'] }}</a>
+                            </li>
+                        @endforeach
+                    @else
+                        <p>This user doesn't have any followers!</p>
+                    @endif
                 </ul>
             </div>
 
